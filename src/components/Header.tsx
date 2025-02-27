@@ -1,4 +1,4 @@
-
+//Interface für die Probs aus der Home.tsx
 export interface IProps {
     searchInput: string;
     setSearchInput: React.Dispatch<React.SetStateAction<string>>;
@@ -6,12 +6,14 @@ export interface IProps {
     setSelectFilter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Header: React.FC<IProps> = (props) => {
 
+//Props als Parameter weiter geben und den Typ der Funktion entsprechend bestimmen
+//um auf die Inputfelder zugreifen zu können und sie dann im Fetch-Link zu bneutzen benutze ich hier onChange und ändere die useStatus() zum Value des Input-Feldes
+//hier brauche ich also nur die Veränderungsfunktion aus dem useStatus()
+const Header: React.FC<IProps> = (props) => {
 
     return ( 
         <header>
-            <h1>Choose your News</h1>
             <nav className="flex gap-10">
                 <input className="bg-red-300 p-2 border border-red-400" type="text" value={props.searchInput} onChange={(event: React.ChangeEvent<HTMLInputElement>)=> props.setSearchInput(event.target.value)} />
                 <select onChange={(event: React.ChangeEvent<HTMLSelectElement>)=> props.setSelectLanguage(event.target.value)} className="bg-red-300 p-3 border border-red-400" name="language" id="language">

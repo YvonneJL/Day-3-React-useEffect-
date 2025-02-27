@@ -3,7 +3,8 @@ import FetchNewsApi from "../components/FetchNewsApi";
 import Header from "../components/Header";
 
 
-
+//oberste Datei, hier kommen quasi alle Komponenten zusammen
+//deshalb werden hier die "Props" definiert--> die 3 States unten, werden hier initialisert und dann in die Komponenten weiter gegeben
 const Home = () => {
     
     const [searchInput, setSearchInput] = useState("")

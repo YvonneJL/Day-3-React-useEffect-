@@ -21,7 +21,7 @@ interface IArticle {
 }
 
 
-//interface Props
+//interface Props aus Home.tsx
 interface IProps {
     searchInput: string;
     selectLanguage: string;
@@ -32,16 +32,25 @@ interface IProps {
 const apiKey = import.meta.env.VITE_NEWS_KEY;
 
 
-
+//props aus oberster Datei(Home) werden hier als Paramter übergeben
+//Props sind die useStates zu den search-Feldern
+//hier in der Datei muss dazu ein passendes Interface erstellt werden (s.o.)
+//hier brauche ich dann den Wert, den Getter, des useStatus()
 const FetchNewsApi: React.FC<IProps> = (props) => {
+    //useState für den fetch
+    //Typ ist erstmal der komplette fetch
   const [newsData, setNewsData] = useState<null | INewsData>(null);
 
+
+  //fetch ist ausgelagert, damit ich die Parameter (search Parameter) mit übergeben kann
   const fetchData = (
     searchTerm: string,
     sortBy: string,
     language: string,
     apiKey: string
   ) => {
+    //fetch Block--> immer so?!
+    //danach hab ich dann die kompletten Dateien, in dem Fall also noch nicht das Array aus Artikeln
     fetch(
       `https://newsapi.org/v2/everything?q=${searchTerm}&sortBy=${sortBy}&language=${language}&apiKey=${apiKey}`
     )
@@ -50,16 +59,24 @@ const FetchNewsApi: React.FC<IProps> = (props) => {
       .catch((error) => console.log(error));
   };
 
-console.log("Props");
-
+  //im useEffect() wird die fetch Funktion aufgerufen
+  //aber nur dann, wenn alle search Felder ausgefüllt wurden
+  //wenn nichts ausgefüllt ist, habe ich default Werte angegeben (else)
+  //funktioniert aber auch ohne die default Werte
+  //die Abhängigkeiten sind die search Felder
+  //ohne die Abhängigkeit passiert gar nichts-bzw eben nur der erste fetch aus dem else Teil
+  //useEffect wird erst dann wieder benutzt, wenn sich ein State ändert
   useEffect(() => {
     if (props.searchInput && props.selectFilter && props.selectLanguage) {
         fetchData(props.searchInput, props.selectFilter, props.selectLanguage, apiKey);
     } else {
-        fetchData("cat", "relevancy", "en", apiKey)
+        fetchData("fuck the patriarchy", "relevancy", "en", apiKey)
     }
   }, [props.searchInput, props.selectFilter, props.selectLanguage]);
 
+
+  //hier ist wichtig, dass erstmal mit ternary operator abgefragt wird, ob newsData(gefetchte Dateien) existieren
+  //Und dann muss .articles gemapped werden und für den Parameter der passende Typ mitgegeben werden
   return (
     <>
       {newsData ? (
